@@ -1,340 +1,738 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!-- The 'dark' class will be added here by JS -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aml Ahmed | Software Quality Assurance Engineer</title>
+  <title>Aml Ahmed | Software Testing Engineer</title>
   
-  <!-- Load Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts: Inter for professional look -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
   <style>
-    /* QA & Testing Theme Variables */
+    /* --- Color Palette & Theme Variables --- */
     :root {
-      --qa-blue: #2196F3; /* Primary: Trust, Reliability, Precision */
-      --qa-green: #4CAF50; /* Secondary: Quality, Success */
-      --qa-dark: #263238; /* Dark Text */
-      --qa-light-bg: #f5f5f5;
-      --qa-card-bg: #ffffff;
-      --qa-accent: #FFC107; /* Highlight Color */
+      /* Light Theme Colors */
+      --color-bg-primary: #f8fafc;    /* Body background */
+      --color-bg-secondary: #ffffff; /* Card/Navbar background */
+      --color-bg-tertiary: #f1f5f9;   /* Alternating section background */
+      --color-text-primary: #1e293b;  /* Main text, headings */
+      --color-text-secondary: #64748b;/* Subtitles, paragraphs */
+      --color-border: #e2e8f0;
+
+      /* Shared Accent Colors */
+      --qa-green: #10B981;
+      --qa-accent: #F59E0B;
     }
+
+    html.dark {
+      /* Dark Theme Override */
+      --color-bg-primary: #0f172a;    /* Body background */
+      --color-bg-secondary: #1e293b; /* Card/Navbar background */
+      --color-bg-tertiary: #334155;   /* Alternating section background */
+      --color-text-primary: #f1f5f9;  /* Main text, headings */
+      --color-text-secondary: #94a3b8;/* Subtitles, paragraphs */
+      --color-border: #475569;
+    }
+
+    /* --- Base Setup --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      color: var(--qa-dark);
-      background-color: var(--qa-light-bg);
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
       scroll-behavior: smooth;
-    }
-
-    /* --- Typing Effect & Cursor --- */
-    .typing-container {
-        display: inline-block;
-        white-space: nowrap; /* Prevent line break during typing */
-    }
-    
-    .typing-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 1.2em; /* Matches font size */
-      background-color: white;
-      margin-left: 2px;
-      animation: blink 0.7s step-end infinite;
-      vertical-align: middle;
-      opacity: 1;
-    }
-
-    @keyframes blink {
-      from, to { opacity: 0; }
-      50% { opacity: 1; }
-    }
-    
-    /* --- General Styling --- */
-    .qa-card {
-      transition: transform 0.4s, box-shadow 0.4s;
-      border-radius: 12px;
-      border-top: 5px solid var(--qa-blue);
-    }
-    .qa-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(33, 150, 243, 0.2);
-    }
-
-    .skill-badge {
-      background-color: #E3F2FD; /* Very Light Blue */
-      color: var(--qa-blue);
-      border: 1px solid var(--qa-blue);
       transition: background-color 0.3s, color 0.3s;
+      cursor: none !important; 
     }
-    .skill-badge:hover {
-      background-color: var(--qa-blue);
+    
+    a, button, input[type="submit"], .qa-card:hover {
+        cursor: pointer !important;
+    }
+    
+    section {
+      transition: background-color 0.3s;
+    }
+
+    /* --- Custom Cursor --- */
+    #custom-cursor { position: fixed; pointer-events: none; z-index: 10000; width: 60px; height: 60px; }
+    #bug-follower { position: absolute; font-size: 20px; transform: translate(-50%, -50%); will-change: transform; z-index: 10001; }
+    #magnifying-glass { position: absolute; width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--qa-green); background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 8px rgba(16, 185, 129, 0.9), 0 0 15px rgba(255, 255, 255, 0.15) inset; backdrop-filter: blur(2px); transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform; }
+    #magnifying-glass::after { content: ''; position: absolute; width: 12px; height: 3px; background: var(--qa-green); transform: rotate(45deg); bottom: -8px; right: -10px; border-radius: 1.5px; }
+
+    /* --- Navbar & Link Styling --- */
+    .nav-link-item { position: relative; transition: color 0.3s; padding-bottom: 6px; }
+    .nav-link-item:hover { color: var(--qa-green); }
+    .nav-link-item::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--qa-green); transition: width 0.3s ease-in-out; }
+    .nav-link-item:hover::after { width: 100%; }
+    
+    header {
+      background-color: var(--color-bg-secondary);
+      border-bottom: 1px solid var(--color-border);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    /* --- Contact Link Hover Effect --- */
+    .contact-link { position: relative; transition: color 0.3s; padding-bottom: 4px; color: var(--color-text-primary); font-weight: 600; }
+    .contact-link:hover { color: var(--qa-green); }
+    .contact-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--qa-green); transition: width 0.3s ease-in-out; }
+    .contact-link:hover::after { width: 100%; }
+    .contact-link i { transition: color 0.3s; color: var(--color-text-secondary); }
+    .contact-link:hover i { color: var(--qa-green); }
+
+    /* --- Typing Effect --- */
+    .typing-container { display: inline-block; white-space: nowrap; }
+    .typing-cursor { display: inline-block; width: 3px; height: 1.2em; background-color: var(--qa-accent); margin-left: 2px; animation: blink 0.7s step-end infinite; vertical-align: middle; }
+    @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
+
+    /* --- Card Styling --- */
+    .qa-card {
+      background-color: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      transition: transform 0.4s, box-shadow 0.4s, background-color 0.3s, border-color 0.3s;
+      border-radius: 12px;
+      border-top: 5px solid var(--qa-green);
+    }
+    .qa-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+
+    /* --- Skill Badges --- */
+    .skill-badge {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--qa-green);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    }
+    .skill-badge:hover { background-color: var(--qa-green); color: white; transform: scale(1.05); }
+
+    /* --- Slider Styles (Reusable) --- */
+    .slider-wrapper {
+        position: relative;
+    }
+    .slider-container {
+      margin: auto;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      padding: 20px 0.5rem;
+    }
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--color-bg-tertiary);
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0.9;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slider-btn:hover {
+      opacity: 1;
+      background-color: var(--qa-green);
       color: white;
     }
+    .slider-btn.prev { left: -20px; }
+    .slider-btn.next { right: -20px; }
+    .dots-container {
+      text-align: center;
+      padding: 15px 0;
+    }
+    .dot {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+    html.dark .dot { background-color: #718096; }
+    .dot.active, .dot:hover { background-color: var(--qa-green); }
+
   </style>
 </head>
 <body>
-  <!-- Navbar (Fixed/Sticky) -->
-  <header class="sticky top-0 z-50 bg-white shadow-lg transition-shadow duration-300">
-    <nav class="container mx-auto p-4 flex justify-between items-center max-w-6xl">
-      <h1 class="text-2xl font-extrabold" style="color: var(--qa-blue);">Aml Ahmed</h1>
-      <ul class="flex space-x-6 text-base font-semibold">
-        <li><a href="#about" class="text-gray-700 hover:text-blue-600 transition">About</a></li>
-        <li><a href="#skills" class="text-gray-700 hover:text-blue-600 transition">Skills</a></li>
-        <li><a href="#projects" class="text-gray-700 hover:text-blue-600 transition">Projects</a></li>
-        <li><a href="#contact" class="text-gray-700 hover:text-blue-600 transition">Contact</a></li>
-      </ul>
+  
+  <div id="custom-cursor">
+    <span id="bug-follower">🐞</span> 
+    <div id="magnifying-glass"></div>
+  </div>
+
+  <header id="navbar" class="sticky top-0 z-50 shadow-md transition-shadow duration-300">
+    <nav class="container mx-auto p-4 flex justify-between items-center max-w-7xl">
+      <a href="#" class="text-2xl font-extrabold nav-link-item" style="color: var(--qa-green);">Aml Ahmed</a>
+      <div class="flex items-center">
+        <ul class="flex text-base font-semibold mr-8">
+          <li><a href="#about" class="nav-link-item px-4">About</a></li>
+          <li><a href="#experience" class="nav-link-item px-4">Experience</a></li>
+          <li><a href="#education" class="nav-link-item px-4">Education</a></li>
+          <li><a href="#certificates" class="nav-link-item px-4">Certificates</a></li>
+          <li><a href="#skills" class="nav-link-item px-4">Skills</a></li>
+          <li><a href="#projects" class="nav-link-item px-4">Projects</a></li>
+          <li><a href="#contact" class="nav-link-item pl-4">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="p-2 rounded-full text-lg" style="color: var(--color-text-secondary); background-color: var(--color-bg-tertiary);">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
+        </button>
+      </div>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-blue-700 to-cyan-500 text-white py-20 md:py-32 text-center shadow-2xl">
-    <div class="container mx-auto px-4 max-w-6xl">
-      <!-- Profile Image -->
-      <img src="Profile.jpg" alt="Aml Ahmed Profile Photo" class="w-36 h-36 object-cover rounded-full mx-auto mb-6 ring-4 ring-white shadow-xl transform transition duration-500 hover:scale-105" loading="lazy"/>
-      
-      <h2 class="text-4xl sm:text-5xl font-extrabold mb-4">
-        Hello, I'm <span style="color: var(--qa-accent);">Aml</span> 👋
-      </h2>
-      
-      <!-- Typing Machine Effect Target -->
-      <div id="typing-text-container" class="text-2xl font-light tracking-wide mx-auto h-10 flex justify-center items-center">
-        <div id="typing-text" class="typing-container text-yellow-100"></div>
-      </div>
-      
-      <!-- Call to Action for Freelance Clients -->
-      <a href="CV.pdf" target="_blank" class="mt-10 inline-block bg-white text-blue-700 font-bold text-lg py-3 px-10 rounded-full shadow-xl hover:bg-gray-100 transition duration-300 transform hover:scale-105">
-        Download My CV
-        <i class="fas fa-download ml-2"></i>
-      </a>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-16 bg-white">
-    <div class="container mx-auto px-4 text-center max-w-4xl">
-      <h2 class="text-3xl font-bold mb-6" style="color: var(--qa-blue);">About Me</h2>
-      <p class="text-lg text-gray-600 leading-relaxed">
-        I am a highly **motivated and detail-oriented Software Tester** with a B.Sc. in Computer Science. My passion lies in **Manual Testing** and ensuring the delivery of reliable, high-quality software. 
-        I am adept at writing precise test cases, performing thorough bug tracking, and understanding the core principles of the SDLC and Agile methodologies. I am actively seeking freelance opportunities to leverage my skills and help teams achieve superior product quality.
-      </p>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4 max-w-6xl">
-      <h2 class="text-3xl font-bold text-center mb-10" style="color: var(--qa-blue);">Key Skills & Tools (What I Offer)</h2>
-      <div class="max-w-4xl mx-auto">
-        
-        <!-- QA Core Methodologies -->
-        <h3 class="text-xl font-semibold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Testing Methodologies</h3>
-        <div class="flex flex-wrap gap-3 mb-8 justify-center md:justify-start">
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">Manual Testing</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">Test Case Design</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">Bug Reporting (Jira Standard)</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">SDLC & STLC</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">Agile / Scrum</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">ISTQB Concepts</span>
-        </div>
-
-        <!-- Tools & Automation Readiness -->
-        <h3 class="text-xl font-semibold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Essential Tools</h3>
-        <div class="flex flex-wrap gap-3 mb-8 justify-center md:justify-start">
-          <span class="skill-badge text-sm py-2 px-4 rounded-full"><i class="fas fa-tasks mr-2"></i> Jira (Bug/Test Management)</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full"><i class="fas fa-terminal mr-2"></i> Postman (API Testing)</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">Newman (CI/CD)</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full"><i class="fab fa-github mr-2"></i> GitHub</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">VS Code / IntelliJ</span>
-          <span class="skill-badge text-sm py-2 px-4 rounded-full">SQL Databases</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Projects Section -->
-  <section id="projects" class="py-16 bg-white">
-    <div class="container mx-auto px-4 max-w-6xl">
-      <h2 class="text-3xl font-bold text-center mb-10" style="color: var(--qa-blue);">Highlighted QA Projects</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        
-        <!-- Project 1: Manual Testing Portfolio -->
-        <div class="qa-card bg-white p-6 shadow-xl">
-          <div class="flex items-center mb-4">
-            <i class="fas fa-file-invoice text-3xl mr-3" style="color: var(--qa-green);"></i>
-            <h3 class="text-xl font-bold text-gray-800">Manual Testing Documentation</h3>
+  <main>
+    <section id="home" style="background-color: var(--color-bg-secondary);" class="py-20 md:py-32 text-center">
+      <div class="container mx-auto px-4 max-w-4xl z-10 relative">
+          <img src="Profile.jpg" alt="Aml Ahmed Profile Photo" class="w-36 h-36 object-cover rounded-full mx-auto mb-6 ring-4 shadow-xl transform transition duration-500 hover:scale-105" style="border-color: var(--qa-green);" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/144x144/E0E0E0/000000?text=AA';"/>
+          <h2 class="text-4xl sm:text-5xl font-extrabold mb-4" style="color: var(--color-text-primary);">Hi, I'm <span style="color: var(--qa-accent);">Aml</span> 👋</h2>
+          <div class="text-2xl font-light tracking-wide mx-auto h-10 flex justify-center items-center mb-6" style="color: var(--qa-accent);">
+            <div id="typing-text" class="typing-container"></div>
           </div>
-          <p class="text-gray-600 mb-4 text-sm">
-            Comprehensive documentation showcasing my core skills in manual QA:
-          </p>
-          <ul class="list-disc list-inside text-gray-600 pl-4 text-sm space-y-1">
-            <li>Detailed **Test Cases** (Functional & Non-Functional).</li>
-            <li>Professional **Bug Reports** following industry best practices.</li>
-            <li>**Requirement Traceability Matrix (RTM)** example.</li>
-          </ul>
-          <!-- Placeholder Link - Replace '#' with your actual project link -->
-          <a href="https://github.com/AmlAhmedElbana" target="_blank" class="mt-4 inline-block font-semibold text-sm" style="color: var(--qa-blue);">
-            View on GitHub 
-            <i class="fas fa-arrow-right ml-2"></i>
+          <a href="CV.pdf" target="_blank" class="inline-block text-white font-bold text-lg py-3 px-10 rounded-full shadow-xl hover:opacity-90 transition duration-300 transform hover:scale-105" style="background-color: var(--qa-green);">
+            Download My CV <i class="fas fa-download ml-2"></i>
           </a>
-        </div>
-        
-        <!-- Project 2: API Testing with Postman -->
-        <div class="qa-card bg-white p-6 shadow-xl">
-          <div class="flex items-center mb-4">
-            <i class="fas fa-code-branch text-3xl mr-3" style="color: var(--qa-green);"></i>
-            <h3 class="text-xl font-bold text-gray-800">API Testing Collection</h3>
-          </div>
-          <p class="text-gray-600 mb-4 text-sm">
-            A Postman Collection for testing REST APIs, demonstrating technical proficiency:
-          </p>
-          <ul class="list-disc list-inside text-gray-600 pl-4 text-sm space-y-1">
-            <li>**Automated Test Scripts** for response validation.</li>
-            <li>**Environment Management** (Dev, Staging).</li>
-            <li>**CI Integration** readiness using Newman.</li>
-          </ul>
-          <!-- Placeholder Link - Replace '#' with your actual project link -->
-          <a href="https://github.com/AmlAhmedElbana" target="_blank" class="mt-4 inline-block font-semibold text-sm" style="color: var(--qa-blue);">
-            View Postman Collection
-            <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
+      </div>
+    </section>
 
-        <!-- Project 3: Mobile App Testing (Anatomia) -->
-        <div class="qa-card bg-white p-6 shadow-xl">
-            <div class="flex items-center mb-4">
-              <i class="fas fa-mobile-alt text-3xl mr-3" style="color: var(--qa-green);"></i>
-              <h3 class="text-xl font-bold text-gray-800">Mobile Testing Case Study</h3>
+    <section id="about" style="background-color: var(--color-bg-tertiary);" class="py-16">
+      <div class="container mx-auto px-4 text-center max-w-4xl">
+        <h2 class="text-3xl font-bold mb-6" style="color: var(--qa-green);">About Me</h2>
+        <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+          Highly motivated and detail-oriented Software Tester with passion for Manual Testing, skilled in writing test cases and bug tracking. Seeking to leverage my expertise in manual and automation testing to ensure high-quality software delivery.
+        </p>
+      </div>
+    </section>
+
+    <section id="experience" style="background-color: var(--color-bg-secondary);" class="py-16">
+      <div class="container mx-auto px-4 max-w-5xl space-y-8">
+          <h2 class="text-3xl font-bold text-center mb-2" style="color: var(--qa-green);">Work Experience</h2>
+          
+          <div class="qa-card p-8">
+              <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Software Testing Intern</h3>
+              <p class="font-semibold" style="color: var(--qa-accent);">DEPI - Digital Egypt Pioneers Initiative | June 2025 - Present</p>
+              <ul class="list-disc list-inside mt-4 space-y-2" style="color: var(--color-text-secondary);">
+                  <li>Gaining hands-on experience in advanced software testing methodologies through an intensive, government-backed program.</li>
+                  <li>Applying learned concepts to real-world projects, focusing on both manual and automated testing techniques.</li>
+                  <li>Developing foundational skills in industry-standard automation tools such as Selenium and Cypress.</li>
+              </ul>
+          </div>
+
+          <div class="qa-card p-8">
+              <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Software Tester Intern</h3>
+              <p class="font-semibold" style="color: var(--qa-accent);">El-Nas l Ba'daha | September 2025 - October 2025</p>
+              <ul class="list-disc list-inside mt-4 space-y-2" style="color: var(--color-text-secondary);">
+                  <li>Conducted functional testing on the "El-Nas l Ba'daha" application to ensure all features worked as expected.</li>
+                  <li>Performed usability testing to guarantee a smooth and intuitive user experience.</li>
+                  <li>Validated data integrity by verifying that user actions were correctly reflected in the Firebase backend.</li>
+              </ul>
+          </div>
+
+          <div class="qa-card p-8">
+              <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">DEMI Coding Instructor</h3>
+              <p class="font-semibold" style="color: var(--qa-accent);">iSchool | June 2024 - July 2025</p>
+              <p class="text-sm mt-2" style="color: var(--color-text-secondary);">DEMI initiative by the Egyptian ministry of communications.</p>
+              <ul class="list-disc list-inside mt-4 space-y-2" style="color: var(--color-text-secondary);">
+                  <li>Delivered programming workshops to beginner-level students.</li>
+                  <li>Taught logic building, problem solving, and coding fundamentals.</li>
+                  <li>Adapted teaching for diverse age groups and learning styles.</li>
+              </ul>
+          </div>
+      </div>
+    </section>
+
+    <section id="education" style="background-color: var(--color-bg-tertiary);" class="py-16">
+      <div class="container mx-auto px-4 max-w-5xl">
+          <h2 class="text-3xl font-bold text-center mb-10" style="color: var(--qa-green);">Education</h2>
+          <div class="qa-card p-8">
+              <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">B.Sc. in Computer Science, Fayoum University</h3>
+              <p class="font-semibold" style="color: var(--qa-accent);">October 2020 – July 2024 | Grade: Very Good</p>
+              
+              <div class="mt-6 border-t pt-6" style="border-color: var(--color-border);">
+                <h4 class="font-bold" style="color: var(--color-text-primary);">Graduation Project: Anatomia <span class="text-sm font-normal" style="color: var(--qa-green);">(Grade: A+)</span></h4>
+                <p class="mt-2" style="color: var(--color-text-secondary);">
+                  An educational Android application that visualizes human anatomy using Augmented Reality (AR). The app allows users to explore organs in 3D with labeled overlays and interactive elements.
+                </p>
+                <div class="mt-3">
+                  <span class="inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold" style="color: var(--color-text-secondary);">VS Code</span>
+                  <span class="inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold" style="color: var(--color-text-secondary);">ARCore</span>
+                  <span class="inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold" style="color: var(--color-text-secondary);">Flutter</span>
+                </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <section id="certificates" style="background-color: var(--color-bg-secondary);" class="py-16">
+        <div class="container mx-auto max-w-4xl px-4">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: var(--qa-green);">Certificates</h2>
+            <div id="certs-wrapper" class="slider-wrapper">
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <div class="slide">
+                            <div class="qa-card p-12 mx-2 text-center flex flex-col justify-center min-h-[280px]">
+                                <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">ISTQB Foundation Level Preparation</h3>
+                                <p class="font-semibold mt-2" style="color: var(--qa-accent);">Udemy</p>
+                                <a href="https://drive.google.com/file/d/1JxB31v1VH5bPh50PcIWUcGxXBQfDCNPE/view?usp=sharing" target="_blank" class="mt-6 inline-block font-semibold text-sm" style="color: var(--qa-green);">View Certificate <i class="fas fa-external-link-alt ml-2"></i></a>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="qa-card p-12 mx-2 text-center flex flex-col justify-center min-h-[280px]">
+                                 <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Manual Testing Bootcamp</h3>
+                                <p class="font-semibold mt-2" style="color: var(--qa-accent);">QA Cart</p>
+                                <a href="https://drive.google.com/file/d/1-p3R5-pfRLGRB86KUWzQQ8f5FThIuSkS/view?usp=sharing" target="_blank" class="mt-6 inline-block font-semibold text-sm" style="color: var(--qa-green);">View Certificate <i class="fas fa-external-link-alt ml-2"></i></a>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="qa-card p-12 mx-2 text-center flex flex-col justify-center min-h-[280px]">
+                                 <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Effective Test Case & Bug Report Writing</h3>
+                                <p class="font-semibold mt-2" style="color: var(--qa-accent);">MaharaTech</p>
+                                <a href="https://drive.google.com/file/d/1baliJdMUZ21liliMY4Vbfc8r3H3kP4U5/view?usp=sharing" target="_blank" class="mt-6 inline-block font-semibold text-sm" style="color: var(--qa-green);">View Certificate <i class="fas fa-external-link-alt ml-2"></i></a>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="qa-card p-12 mx-2 text-center flex flex-col justify-center min-h-[280px]">
+                                 <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Postman API Fundamentals Student Expert</h3>
+                                <p class="font-semibold mt-2" style="color: var(--qa-accent);">Postman Academy</p>
+                                <a href="#" target="_blank" class="mt-6 inline-block font-semibold text-sm" style="color: var(--qa-green);">View Badge <i class="fas fa-external-link-alt ml-2"></i></a>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="qa-card p-12 mx-2 text-center flex flex-col justify-center min-h-[280px]">
+                                 <h3 class="text-xl font-bold" style="color: var(--color-text-primary);">Postman API Testing</h3>
+                                <p class="font-semibold mt-2" style="color: var(--qa-accent);">QA Cart</p>
+                                <a href="https://drive.google.com/file/d/1OwRY0_MlGVk3EtSE0UdlTlDr3rLRhQOP/view?usp=sharing" target="_blank" class="mt-6 inline-block font-semibold text-sm" style="color: var(--qa-green);">View Certificate <i class="fas fa-external-link-alt ml-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+                <div class="dots-container"></div>
             </div>
-            <p class="text-gray-600 mb-4 text-sm">
-              Testing case study based on the "Anatomia" AR Android application:
-            </p>
-            <ul class="list-disc list-inside text-gray-600 pl-4 text-sm space-y-1">
-              <li>**Usability Testing** for AR features.</li>
-              <li>**Compatibility Testing** across devices/OS versions.</li>
-              <li>Performance review and **Test Summary Report**.</li>
-            </ul>
-            <!-- Placeholder Link - Replace '#' with your actual project link -->
-            <a href="https://github.com/AmlAhmedElbana" target="_blank" class="mt-4 inline-block font-semibold text-sm" style="color: var(--qa-blue);">
-              View Case Study Summary
-              <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+        </div>
+    </section>
+
+    <section id="skills" style="background-color: var(--color-bg-tertiary);" class="py-16">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-3xl font-bold text-center mb-12" style="color: var(--qa-green);">My Skills</h2>
+
+        <div class="mb-16">
+          <h3 class="text-2xl font-bold text-center mb-8" style="color: var(--color-text-primary);">Technical Skills</h3>
+          <div class="max-w-5xl mx-auto space-y-8">
+            <div>
+              <h4 class="text-xl font-semibold mb-4 pl-3 border-l-4" style="color: var(--color-text-primary); border-color: var(--qa-green);">Testing & Methodologies</h4>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Test Case & Bug Report Writing</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Bug Tracking</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Solid Understanding of SDLC & STLC</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Familiar with Agile Methodologies</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">API Testing</span>
+              </div>
+            </div>
+            <div>
+              <h4 class="text-xl font-semibold mb-4 pl-3 border-l-4" style="color: var(--color-text-primary); border-color: var(--qa-green);">Software & Tools</h4>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Jira</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Postman</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Newman</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">VS Code</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">IntelliJ</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Git / GitHub</span>
+                 <span class="skill-badge text-sm py-2 px-4 rounded-full">Excel</span>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 pl-3 border-l-4" style="color: var(--color-text-primary); border-color: var(--qa-green);">Programming Languages</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge text-sm py-2 px-4 rounded-full">C++</span>
+                        <span class="skill-badge text-sm py-2 px-4 rounded-full">Python</span>
+                        <span class="skill-badge text-sm py-2 px-4 rounded-full">Dart</span>
+                        <span class="skill-badge text-sm py-2 px-4 rounded-full">Java</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 pl-3 border-l-4" style="color: var(--color-text-primary); border-color: var(--qa-green);">Databases</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge text-sm py-2 px-4 rounded-full">SQL</span>
+                    </div>
+                </div>
+            </div>
+             <div>
+              <h4 class="text-xl font-semibold mb-4 pl-3 border-l-4" style="color: var(--color-text-primary); border-color: var(--qa-green);">Conceptual & Other</h4>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">OOP</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Data Structures & Algorithms</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Software Lifecycle</span>
+                <span class="skill-badge text-sm py-2 px-4 rounded-full">Strong documentation and presentation skills</span>
+              </div>
+            </div>
           </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section (Call to Action) -->
-  <section id="contact" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4 text-center max-w-3xl">
-      <h2 class="text-3xl font-bold mb-8" style="color: var(--qa-blue);">Ready to ensure quality for your project?</h2>
-      <p class="text-lg mb-8 text-gray-600">
-        I am available for **freelance QA and testing opportunities**. Contact me today to discuss your project requirements, bug tracking needs, or quality assurance strategy.
-      </p>
-
-      <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 md:space-x-reverse">
-        
-        <div class="flex items-center justify-center">
-            <i class="fas fa-envelope text-2xl mr-3" style="color: var(--qa-blue);"></i>
-            <a href="mailto:aamlalbna@gmail.com" class="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">aamlalbna@gmail.com</a>
         </div>
 
-        <div class="flex items-center justify-center">
-            <i class="fab fa-linkedin text-2xl mr-3" style="color: var(--qa-blue);"></i>
-            <a href="https://www.linkedin.com/in/amlahmedelbana" target="_blank" class="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">LinkedIn</a>
-        </div>
-
-        <div class="flex items-center justify-center">
-            <i class="fab fa-github text-2xl mr-3" style="color: var(--qa-blue);"></i>
-            <a href="https://github.com/AmlAhmedElbana" target="_blank" class="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">GitHub</a>
+        <div class="border-t pt-12" style="border-color: var(--color-border);">
+            <h3 class="text-2xl font-bold text-center mb-8" style="color: var(--color-text-primary);">Behavioral & Interpersonal Skills</h3>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div class="flex items-start"><i class="fas fa-comments text-xl mr-4 mt-1" style="color: var(--qa-green);"></i><p style="color: var(--color-text-secondary);">Excellent communication and public speaking skills</p></div>
+                <div class="flex items-start"><i class="fas fa-tasks text-xl mr-4 mt-1" style="color: var(--qa-green);"></i><p style="color: var(--color-text-secondary);">Highly organized with effective planning abilities</p></div>
+                <div class="flex items-start"><i class="fas fa-users text-xl mr-4 mt-1" style="color: var(--qa-green);"></i><p style="color: var(--color-text-secondary);">Strong teamwork and leadership potential</p></div>
+                <div class="flex items-start"><i class="fas fa-lightbulb text-xl mr-4 mt-1" style="color: var(--qa-green);"></i><p style="color: var(--color-text-secondary);">Passionate about learning and continuous improvement</p></div>
+            </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+    
+    <section id="projects" style="background-color: var(--color-bg-secondary);" class="py-16">
+        <div class="container mx-auto max-w-4xl px-4">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: var(--qa-green);">Highlighted Projects</h2>
+            <div id="projects-wrapper" class="slider-wrapper">
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <!-- Project Slide 1 -->
+                        <div class="slide">
+                            <div class="qa-card p-8 mx-2 text-left h-full flex flex-col min-h-[420px]">
+                                <h3 class="text-2xl font-bold text-left mb-4 max-w-prose" style="color: var(--color-text-primary);">QA 20Days Portfolio</h3>
+                                <ul class="space-y-3 text-base max-w-prose" style="color: var(--color-text-secondary);">
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Tested and validated functionality across multiple web applications.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Explored mobile testing techniques to ensure cross-device compatibility.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Conducted comprehensive API testing to verify backend integrity.</span></li>
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Bridged the gap between theoretical knowledge and practical application.</span></li>
+                                </ul>
+                                <div class="mt-8">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Manual Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">API Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Bug reporting</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Test cases</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Jira</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Chrome DevTools</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Postman</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Newman</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/AmlAhmedElbana/QA-20Days-Portfolio" target="_blank" class="mt-auto pt-4 inline-flex items-center font-semibold text-sm" style="color: var(--qa-green);">
+                                    <i class="fab fa-github mr-2"></i> View Repository
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Project Slide 2 -->
+                        <div class="slide">
+                             <div class="qa-card p-8 mx-2 text-left h-full flex flex-col min-h-[420px]">
+                                <h3 class="text-2xl font-bold text-left mb-4 max-w-prose" style="color: var(--color-text-primary);">OpenCart E-commerce Test Strategy</h3>
+                                <ul class="space-y-3 text-base max-w-prose" style="color: var(--color-text-secondary);">
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Authored a comprehensive Test Plan, defining scope, objectives, and features to be tested.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Developed a Requirements Traceability Matrix (RTM) to ensure full test coverage.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Applied Pairwise testing technique to efficiently test the user registration form.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Analyzed and documented high-level system requirements for the platform.</span></li>
+                                </ul>
+                                <div class="mt-8">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Test Plan</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">RTM</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Pairwise Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">ISTQB Concepts</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Requirements Analysis</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Excel</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/AmlAhmedElbana/QA-20Days-Portfolio" target="_blank" class="mt-auto pt-4 inline-flex items-center font-semibold text-sm" style="color: var(--qa-green);">
+                                    <i class="fab fa-github mr-2"></i> View Repository
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Project Slide 3 -->
+                        <div class="slide">
+                             <div class="qa-card p-8 mx-2 text-left h-full flex flex-col min-h-[420px]">
+                                <h3 class="text-2xl font-bold text-left mb-4 max-w-prose" style="color: var(--color-text-primary);">API Testing with Postman</h3>
+                                <ul class="space-y-3 text-base max-w-prose" style="color: var(--color-text-secondary);">
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Built API test suites for JSONPlaceholder using various HTTP requests (GET, POST, DELETE).</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Wrote advanced assertions to validate JSON schema, response data, and status codes.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Executed automated test runs from the command line using Newman.</span></li>
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Generated detailed HTML test reports to visualize results and coverage.</span></li>
+                                </ul>
+                                <div class="mt-8">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Postman</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Newman</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Assertions</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Negative Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">CLI</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">HTML Reports</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/AmlAhmedElbana/QA-20Days-Portfolio" target="_blank" class="mt-auto pt-4 inline-flex items-center font-semibold text-sm" style="color: var(--qa-green);">
+                                    <i class="fab fa-github mr-2"></i> View Repository
+                                </a>
+                            </div>
+                        </div>
+                         <!-- Project Slide 4 -->
+                        <div class="slide">
+                             <div class="qa-card p-8 mx-2 text-left h-full flex flex-col min-h-[420px]">
+                                <h3 class="text-2xl font-bold text-left mb-4 max-w-prose" style="color: var(--color-text-primary);">UI & API Data Consistency Validation</h3>
+                                <ul class="space-y-3 text-base max-w-prose" style="color: var(--color-text-secondary);">
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Developed a project charter to define scope, risks, and success criteria for UI-API integration testing.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Created and executed UI & API test cases, including negative scenarios and schema validation.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Implemented a key assertion in Postman to automatically verify data consistency between the UI and the API response.</span></li>
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Authored a final test report summarizing findings and test coverage.</span></li>
+                                </ul>
+                                <div class="mt-8">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">UI Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">API Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Data Consistency</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Test Charter</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Postman</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Assertions</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Excel</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">RTM</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/AmlAhmedElbana/QA-20Days-Portfolio" target="_blank" class="mt-auto pt-4 inline-flex items-center font-semibold text-sm" style="color: var(--qa-green);">
+                                    <i class="fab fa-github mr-2"></i> View Repository
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Project Slide 5 -->
+                        <div class="slide">
+                             <div class="qa-card p-8 mx-2 text-left h-full flex flex-col min-h-[420px]">
+                                <h3 class="text-2xl font-bold text-left mb-4 max-w-prose" style="color: var(--color-text-primary);">Android Mobile App Testing</h3>
+                                <ul class="space-y-3 text-base max-w-prose" style="color: var(--color-text-secondary);">
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Executed a comprehensive testing suite on the "NoNonsense Notes" Android app.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Authored 16 diverse test cases covering Functional, UI, Interrupt, Negative, and Accessibility scenarios.</span></li>
+                                    <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Identified, documented, and reported 4 critical bugs on Jira with detailed attachments.</span></li>
+                                     <li class="flex items-start"><i class="fas fa-check-circle text-sm mr-3 mt-1" style="color: var(--qa-green);"></i><span>Utilized Android Debug Bridge (ADB) to install the APK and capture logcats for effective debugging.</span></li>
+                                </ul>
+                                <div class="mt-8">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Mobile Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">ADB</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Logcat</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Jira</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Bug Reporting</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Accessibility Testing</span>
+                                        <span class="skill-badge text-xs py-1 px-3 rounded-full">Negative Testing</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/AmlAhmedElbana/QA-20Days-Portfolio" target="_blank" class="mt-auto pt-4 inline-flex items-center font-semibold text-sm" style="color: var(--qa-green);">
+                                    <i class="fab fa-github mr-2"></i> View Repository
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+                <div class="dots-container"></div>
+            </div>
+        </div>
+    </section>
 
+    <section id="contact" style="background-color: var(--color-bg-tertiary);" class="py-16">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="text-3xl font-bold mb-8" style="color: var(--qa-green);">Ready to ensure quality?</h2>
+        <p class="text-lg mb-8" style="color: var(--color-text-secondary);">I'm actively looking for new opportunities to apply my software testing skills. Whether you're hiring for a full-time role or have an exciting project, I'd love to connect.</p>
+        <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12">
+          <a href="mailto:aamlalbna@gmail.com" class="contact-link"><i class="fas fa-envelope mr-2"></i> aamlalbna@gmail.com</a>
+          <a href="https://www.linkedin.com/in/amlahmedelbana" target="_blank" class="contact-link"><i class="fab fa-linkedin mr-2"></i> LinkedIn</a>
+          <a href="https://github.com/AmlAhmedElbana" target="_blank" class="contact-link"><i class="fab fa-github mr-2"></i> GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white p-4 text-center text-sm">
-    <p>© 2025 Aml Ahmed | Quality Assurance Portfolio | Built with Love on GitHub Pages</p>
+  <footer class="p-4 text-center text-sm" style="background-color: #0f172a; color: var(--color-text-secondary);">
+    <p>© 2025 <a href="#" class="nav-link-item inline-block" style="color: var(--color-text-secondary);">Aml Ahmed</a> | All rights reserved</p>
   </footer>
-  
-  <!-- Back to Top Button -->
-  <button id="topBtn" class="fixed bottom-6 right-6 bg-blue-500 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-700 z-50">
-    <i class="fas fa-arrow-up"></i>
-  </button>
 
-<script>
-  // --- JavaScript for Dynamic Effects (Typing & Scroll) ---
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-  // 1. Navbar Shadow on Scroll
-  const navbar = document.querySelector("header");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add("shadow-xl");
-    } else {
-      navbar.classList.remove("shadow-xl");
-    }
-  });
+      // --- THEME TOGGLE LOGIC ---
+      const themeToggleButton = document.getElementById('theme-toggle');
+      const darkIcon = document.getElementById('theme-toggle-dark-icon');
+      const lightIcon = document.getElementById('theme-toggle-light-icon');
+      const htmlElement = document.documentElement;
 
-  // 2. Scroll to Top Button
-  const topBtn = document.getElementById("topBtn");
+      const applyTheme = () => {
+        const storedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+          htmlElement.classList.add('dark');
+          darkIcon.classList.remove('hidden');
+          lightIcon.classList.add('hidden');
+        } else {
+          htmlElement.classList.remove('dark');
+          darkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+        }
+      };
 
-  topBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+      themeToggleButton.addEventListener('click', () => {
+        htmlElement.classList.toggle('dark');
+        const isDark = htmlElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        darkIcon.classList.toggle('hidden', !isDark);
+        lightIcon.classList.toggle('hidden', isDark);
+      });
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
-      topBtn.classList.add("opacity-100");
-      topBtn.classList.remove("opacity-0");
-    } else {
-      topBtn.classList.add("opacity-0");
-      topBtn.classList.remove("opacity-100");
-    }
-  });
+      applyTheme(); 
 
+      // --- Typing Machine Effect (FIXED) ---
+      const textToType = "Software Testing Engineer | QA Enthusiast";
+      const typingContainer = document.getElementById("typing-text");
+      let i = 0;
+      const speed = 75;
+      let typingTimeout;
+      let textElement;
 
-  // 3. Typing Machine Effect with Blinking Cursor
-  const textToType = "Software Tester | QA Enthusiast ";
-  let i = 0;
-  const speed = 75; // Typing speed in milliseconds
-  const typingElement = document.getElementById("typing-text");
+      if (typingContainer) {
+        typingContainer.innerHTML = '<span></span><span class="typing-cursor"></span>';
+        textElement = typingContainer.querySelector('span:first-child');
+      }
 
-  function typeWriter() {
-    if (i < textToType.length) {
-      // 1. Add the next character
-      typingElement.innerHTML += textToType.charAt(i);
-      i++;
-      
-      // 2. Remove the existing cursor if any
-      const existingCursor = typingElement.querySelector('.typing-cursor');
-      if (existingCursor) {
-        existingCursor.remove();
+      function typeWriter() {
+        if (!textElement) return;
+        
+        if (i < textToType.length) {
+          textElement.textContent += textToType.charAt(i);
+          i++;
+          typingTimeout = setTimeout(typeWriter, speed);
+        }
+      }
+
+      function resetAndStartTyping() {
+        if (textElement) {
+            textElement.textContent = '';
+        }
+        i = 0;
+        clearTimeout(typingTimeout);
+        typeWriter();
+      }
+
+      const homeSection = document.getElementById('home');
+      const observerOptions = { root: null, threshold: 0.5 };
+      const typingObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            resetAndStartTyping();
+          }
+        });
+      }, observerOptions);
+
+      if(homeSection) {
+        typingObserver.observe(homeSection);
+        resetAndStartTyping(); 
       }
       
-      // 3. Add the blinking cursor after the newly typed text
-      typingElement.innerHTML += '<span class="typing-cursor"></span>'; 
-      
-      setTimeout(typeWriter, speed);
-    } else {
-      // Once typing is complete, ensure the cursor remains
-      const existingCursor = typingElement.querySelector('.typing-cursor');
-      if (!existingCursor) {
-         typingElement.innerHTML += '<span class="typing-cursor"></span>';
+      // --- Custom Cursor Logic ---
+      const customCursor = document.getElementById('custom-cursor');
+      const magnifyingGlass = document.getElementById('magnifying-glass');
+      const bugFollower = document.getElementById('bug-follower');
+      let bugTargetX = 0, bugTargetY = 0;
+      let glassCurrentX = 0, glassCurrentY = 0;
+      const glassLag = 0.5;
+      const glassOffsetX = 20, glassOffsetY = 20;
+
+      document.addEventListener('mousemove', (e) => {
+        bugTargetX = e.clientX;
+        bugTargetY = e.clientY;
+        bugFollower.style.transform = `translate(${bugTargetX}px, ${bugTargetY}px)`;
+      });
+
+      function updateCursor() {
+        const glassTargetX = bugTargetX + glassOffsetX;
+        const glassTargetY = bugTargetY + glassOffsetY;
+        glassCurrentX += (glassTargetX - glassCurrentX) * glassLag;
+        glassCurrentY += (glassTargetY - glassCurrentY) * glassLag;
+        magnifyingGlass.style.transform = `translate(${glassCurrentX}px, ${glassCurrentY}px)`;
+        requestAnimationFrame(updateCursor);
       }
-    }
-  }
+      requestAnimationFrame(updateCursor);
 
-  // Start the typing effect when the page loads
-  window.addEventListener("load", typeWriter);
-  
-</script>
+      document.addEventListener('mouseover', (e) => {
+        const isInteractive = e.target.closest('a') || e.target.closest('button');
+        if (isInteractive) customCursor.style.opacity = 0;
+        else customCursor.style.opacity = 1;
+      });
+      window.addEventListener('load', () => { customCursor.style.opacity = 1; });
 
+      // --- UNIVERSAL SLIDER FUNCTION ---
+      const initSlider = (wrapperId) => {
+        const sliderWrapper = document.getElementById(wrapperId);
+        if (!sliderWrapper) return;
+
+        const track = sliderWrapper.querySelector('.slider-track');
+        const slides = Array.from(track.children);
+        const nextButton = sliderWrapper.querySelector('.slider-btn.next');
+        const prevButton = sliderWrapper.querySelector('.slider-btn.prev');
+        const dotsContainer = sliderWrapper.querySelector('.dots-container');
+
+        if (!track || slides.length === 0) return;
+
+        let currentIndex = 0;
+        
+        dotsContainer.innerHTML = ''; 
+        slides.forEach((_, index) => {
+            const button = document.createElement('button');
+            button.classList.add('dot');
+            button.addEventListener('click', () => moveToSlide(index));
+            dotsContainer.appendChild(button);
+        });
+        const dots = Array.from(dotsContainer.children);
+        
+        const updateUI = () => {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            if(dots[currentIndex]) {
+              dots[currentIndex].classList.add('active');
+            }
+        };
+        
+        const moveToSlide = (index) => {
+            currentIndex = index;
+            updateUI();
+        };
+
+        nextButton.addEventListener('click', () => {
+            const nextIndex = (currentIndex + 1) % slides.length;
+            moveToSlide(nextIndex);
+        });
+
+        prevButton.addEventListener('click', () => {
+            const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+            moveToSlide(prevIndex);
+        });
+
+        const resizeObserver = new ResizeObserver(() => {
+          setTimeout(updateUI, 100);
+        });
+        resizeObserver.observe(sliderWrapper);
+        
+        updateUI(); // Initial setup
+      };
+
+      initSlider('certs-wrapper');
+      initSlider('projects-wrapper');
+    });
+  </script>
 </body>
 </html>
+
